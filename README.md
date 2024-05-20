@@ -25,6 +25,7 @@ Axios
 ## Change Log
 
 05-20-2024 6:10pm - Initial React Commit.
+05-20-2024 6:37pm - Added react-bootstrap, bootstrap, and axios to the project. Updated deps optimist and minimist to address critical vulnerabilities.
 
 ## Credit and Collaborations
 
