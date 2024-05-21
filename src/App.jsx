@@ -12,6 +12,7 @@ function App() {
   async function getLocation() {
     const API = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${searchQuery}&format=json`;   
     const response = await axios.get(API);
+    setLocation(response.data[0]);
     console.log(response);
   }
 
