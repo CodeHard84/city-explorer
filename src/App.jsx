@@ -10,8 +10,8 @@ function App() {
     display_name: 'Oklahoma City',
     lat: '35.4729886',
     lon: '-97.5170536',
-    icon: "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
-    license: "https://locationiq.com/attribution",
+    icon: 'https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png',
+    license: 'https://locationiq.com/attribution',
     boundingbox: ['35.290695', '35.6748662', '-97.830948', '-97.124718']
   });
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,6 +30,7 @@ function App() {
       const response = await axios.get(API);
       setLocation(response.data[0]);
       console.log(location);
+      console.log(location.license);
     } catch (error) {
       console.error('API Error: ', error);
     }
@@ -72,7 +73,8 @@ function App() {
         </Col>
         <Col id="map" md={8}>
           <Image src={MAP_API} alt="Map" fluid />
-          <p id='map-license'>Map of {location.display_name} by <a href={location.license}>LocationIQ</a>.</p>
+          {/* Ask Cameron why location.license is not updating when location is updated. */}
+          <p id='map-license'>Map of {location.display_name} by <a href={location.license || 'https://locationiq.com/attribution'} target="_blank">LocationIQ</a>.</p>
         </Col>
       </Row>
     </Container>
