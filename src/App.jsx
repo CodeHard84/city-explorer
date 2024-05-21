@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Form, Button, Image } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Image, Alert } from 'react-bootstrap';
 import './App.css';
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
     boundingbox: ['35.290695', '35.6748662', '-97.830948', '-97.124718']
   });
   const [searchQuery, setSearchQuery] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const API_KEY = import.meta.env.VITE_API_KEY;
   const ZOOM = 10;
   const boundingBoxPath = location.boundingbox
@@ -29,10 +30,12 @@ function App() {
       const API = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${searchQuery}&format=json`;
       const response = await axios.get(API);
       setLocation(response.data[0]);
-      console.log(location);
-      console.log(location.license);
+      // console.log(location);
+      // console.log(location.license);
+      setErrorMessage(''); // Need to do this to make sure any previous error message is cleared.
     } catch (error) {
       console.error('API Error: ', error);
+      setErrorMessage('Check your form submission and try again. ' + error);
     }
   }
 
@@ -47,6 +50,7 @@ function App() {
   return (
     <Container className="app-container">
       <h1>City Explorer</h1>
+      {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
       <Form onSubmit={getLocation}>
         <Row id="uiButtons" className="mb-3">
           <Col>
