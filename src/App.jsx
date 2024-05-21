@@ -4,7 +4,7 @@ import './App.css';
 
 function App() {
   // Constants
-  const [location, setLocation] = useState({display_name: 'OKC'});
+  const [location, setLocation] = useState({display_name: ''});
   const [searchQuery, setSearchQuery] = useState('');
   const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -26,6 +26,8 @@ function App() {
       <input id="citySearch" name="citySearch" type="text" placeholder="Enter city name" onChange={updateQuery}/>
       <button id="exploreButton" name="exploreButton" onClick={getLocation}>Explore!</button>
       <h2>City: {location.display_name}</h2>
+      <h3>Latitude: {location.lat}</h3>
+      <h3>Longitude: {location.lon}</h3>
     </div>
   );
 }
