@@ -1,18 +1,19 @@
 import axios from 'axios';
 import { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col, Form, Button, Image } from 'react-bootstrap';
 import './App.css';
 
 function App() {
   // Constants
-  const [location, setLocation] =
-    useState({
-      display_name: 'Oklahoma City',
-      lat: '35.4729886',
-      lon: '-97.5170536',
-      icon: "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
-      license: "https://locationiq.com/attribution",
-      boundingbox: ['35.290695', '35.6748662', '-97.830948', '-97.124718']
-    }); // State to hold the location data
+  const [location, setLocation] = useState({
+    display_name: 'Oklahoma City',
+    lat: '35.4729886',
+    lon: '-97.5170536',
+    icon: "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
+    license: "https://locationiq.com/attribution",
+    boundingbox: ['35.290695', '35.6748662', '-97.830948', '-97.124718']
+  }); // State to hold the location data
   const [searchQuery, setSearchQuery] = useState(''); // State to hold the user's search query
   const API_KEY = import.meta.env.VITE_API_KEY; // API key for accessing the LocationIQ API
   const ZOOM = 10; // Zoom level for the map
@@ -20,7 +21,6 @@ function App() {
     ? `path=fill:transparent|weight:2|color:red|${location.boundingbox[0]},${location.boundingbox[2]}|${location.boundingbox[1]},${location.boundingbox[2]}|${location.boundingbox[1]},${location.boundingbox[3]}|${location.boundingbox[0]},${location.boundingbox[3]}|${location.boundingbox[0]},${location.boundingbox[2]}`
     : '';
   const MAP_API = `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${location.lat},${location.lon}&zoom=${ZOOM}&size=450x450&format=png&maptype=streets&markers=icon:${location.icon}|${location.lat},${location.lon}&${boundingBoxPath}`;
-
 
   // Functions
   async function getLocation() {
@@ -30,7 +30,7 @@ function App() {
     const response = await axios.get(API);
     // Sets the location state with the first result from the API response
     setLocation(response.data[0]);
-    console.log(response.data[0]);
+    // console.log(response.data[0]);
   }
 
   function updateQuery(event) {
@@ -51,37 +51,41 @@ function App() {
   }
 
   return (
-    <div className="app-container">
+    <Container className="app-container">
       <h1>City Explorer</h1>
-      <div id="uiButtons">
-        <input
-          id="citySearch"
-          name="citySearch"
-          type="text"
-          placeholder="Enter city name"
-          onChange={updateQuery} // Calls updateQuery function on input change
-          onKeyDown={handleKeyDown} // Check for enter button press
-        />
-        <button
-          id="exploreButton"
-          name="exploreButton"
-          onClick={getLocation} // Calls getLocation function on button click
-        >
-          Explore!
-        </button>
-      </div>
-      <div id="map-and-details">
-        <div id="cityDetails">
+      <Row id="uiButtons" className="mb-3">
+        <Col>
+          <Form.Control
+            id="citySearch"
+            name="citySearch"
+            type="text"
+            placeholder="Enter city name"
+            onChange={updateQuery} // Calls updateQuery function on input change
+            onKeyDown={handleKeyDown} // Check for enter button press
+          />
+        </Col>
+        <Col>
+          <Button
+            id="exploreButton"
+            name="exploreButton"
+            onClick={getLocation} // Calls getLocation function on button click
+          >
+            Explore!
+          </Button>
+        </Col>
+      </Row>
+      <Row id="map-and-details">
+        <Col id="cityDetails" md={4}>
           <h2>City: {prettyCityName(location.display_name)}</h2> {/* Displays the city name up to the first comma */}
           <p>Latitude: {location.lat}</p> {/* Displays the latitude of the location */}
           <p>Longitude: {location.lon}</p> {/* Displays the longitude of the location */}
-        </div>
-        <div id="map">
-          <img src={MAP_API} alt="Map" />
+        </Col>
+        <Col id="map" md={8}>
+          <Image src={MAP_API} alt="Map" fluid />
           <p id='map-license'>Map of {location.display_name} by <a href={location.license} target="_blank">LocationIQ</a>.</p>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
