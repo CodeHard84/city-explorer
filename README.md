@@ -30,6 +30,8 @@ Axios
 
 05-20-2024 10:10PM - Connected to LocationIQ API.
 
+05-21-2025 5:30AM - Added Map and some CSS.
+
 ## Credit and Collaborations
 
 ## Features
@@ -43,6 +45,16 @@ Start time: 9:00PM
 Finish time: 10:10PM
 
 Actual time needed to complete: 1HR 10M
+
+Name of feature: Map
+
+Estimate of time needed to complete: 1HR
+
+Start time: 5:30AM
+
+Finish time: 5:53AM
+
+Actual time needed to complete: 23M
 
 ## Time Template
 
