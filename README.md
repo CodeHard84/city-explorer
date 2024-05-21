@@ -28,6 +28,8 @@ Axios
 
 05-20-2024 6:37pm - Added react-bootstrap, bootstrap, and axios to the project. Updated deps optimist and minimist to address critical vulnerabilities.
 
+05-20-2024 10:10PM - Connected to LocationIQ API.
+
 ## Credit and Collaborations
 
 ## Features
@@ -36,11 +38,11 @@ Feature Story: As a user of City Explorer, I want to enter the name of a locatio
 
 Estimate of time needed to complete: 30 Minutes
 
-Start time: _____
+Start time: 9:00PM
 
-Finish time: _____
+Finish time: 10:10PM
 
-Actual time needed to complete: _____
+Actual time needed to complete: 1HR 10M
 
 ## Time Template
 
