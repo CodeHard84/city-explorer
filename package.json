@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axiom": "^0.1.6",
+    "axios": "^1.7.1",
     "bootstrap": "^5.3.3",
     "minimist": "^1.2.8",
     "optimist": "^0.5.2",
