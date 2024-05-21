@@ -25,6 +25,12 @@ function App() {
     return `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${location.lat},${location.lon}&zoom=${ZOOM}&size=450x450&format=png&maptype=streets&markers=icon:${location.icon}|${location.lat},${location.lon}&${boundingBoxPath}`;
   };
 
+  const handleError = (error, message) => {
+    console.error('API Error: ', error);
+    setErrorMessage(message);
+    setHasSearched(false);
+  };
+
   async function getLocation(event) {
     event.preventDefault();
     try {
@@ -36,9 +42,7 @@ function App() {
       setHasSearched(true);
       getWeather(locationData);
     } catch (error) {
-      console.error('API Error: ', error);
-      setErrorMessage('Check your form submission and try again. ' + error);
-      setHasSearched(false);
+      handleError(error, 'Check your form submission and try again.');
     }
   }
 
@@ -49,8 +53,7 @@ function App() {
         setWeather(response.data);
       })
       .catch((error) => {
-        console.error('API Error: ', error);
-        setErrorMessage('Check your form submission and try again. ' + error);
+        handleError(error, 'Check your form submission and try again.');
       });
   }
 
