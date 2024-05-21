@@ -10,12 +10,17 @@ function App() {
       lat: '35.4729886',
       lon: '-97.5170536',
       icon: "https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png",
-      license: "https://locationiq.com/attribution"
+      license: "https://locationiq.com/attribution",
+      boundingbox: ['35.290695', '35.6748662', '-97.830948', '-97.124718']
     }); // State to hold the location data
   const [searchQuery, setSearchQuery] = useState(''); // State to hold the user's search query
   const API_KEY = import.meta.env.VITE_API_KEY; // API key for accessing the LocationIQ API
   const ZOOM = 10; // Zoom level for the map
-  const MAP_API = `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${location.lat},${location.lon}&zoom=${ZOOM}&size=450x450&format=png&maptype=streets&markers=icon:${location.icon}`;
+  const boundingBoxPath = location.boundingbox
+    ? `path=fill:transparent|weight:2|color:red|${location.boundingbox[0]},${location.boundingbox[2]}|${location.boundingbox[1]},${location.boundingbox[2]}|${location.boundingbox[1]},${location.boundingbox[3]}|${location.boundingbox[0]},${location.boundingbox[3]}|${location.boundingbox[0]},${location.boundingbox[2]}`
+    : '';
+  const MAP_API = `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${location.lat},${location.lon}&zoom=${ZOOM}&size=450x450&format=png&maptype=streets&markers=icon:${location.icon}|${location.lat},${location.lon}&${boundingBoxPath}`;
+
 
   // Functions
   async function getLocation() {
@@ -68,8 +73,8 @@ function App() {
       <div id="map-and-details">
         <div id="cityDetails">
           <h2>City: {prettyCityName(location.display_name)}</h2> {/* Displays the city name up to the first comma */}
-          <h3>Latitude: {location.lat}</h3> {/* Displays the latitude of the location */}
-          <h3>Longitude: {location.lon}</h3> {/* Displays the longitude of the location */}
+          <p>Latitude: {location.lat}</p> {/* Displays the latitude of the location */}
+          <p>Longitude: {location.lon}</p> {/* Displays the longitude of the location */}
         </div>
         <div id="map">
           <img src={MAP_API} alt="Map" />
