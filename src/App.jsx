@@ -1,50 +1,64 @@
+import React, { useState } from 'react';
 import axios from 'axios';
-import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Form, Button, Image, Alert } from 'react-bootstrap';
 import './App.css';
+import Weather from './Weather';
 
 function App() {
-  // Constants
-  const [location, setLocation] = useState({
-    display_name: 'Oklahoma City',
-    lat: '35.4729886',
-    lon: '-97.5170536',
-    icon: 'https://locationiq.org/static/images/mapicons/poi_boundary_administrative.p.20.png',
-    license: 'https://locationiq.com/attribution',
-    boundingbox: ['35.290695', '35.6748662', '-97.830948', '-97.124718']
-  });
+  const [location, setLocation] = useState('');
+  const [weather, setWeather] = useState();
   const [searchQuery, setSearchQuery] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [hasSearched, setHasSearched] = useState(false);
   const API_KEY = import.meta.env.VITE_API_KEY;
   const ZOOM = 10;
-  const boundingBoxPath = location.boundingbox
-    ? `path=fill:transparent|weight:2|color:red|${location.boundingbox[0]},${location.boundingbox[2]}|${location.boundingbox[1]},${location.boundingbox[2]}|${location.boundingbox[1]},${location.boundingbox[3]}|${location.boundingbox[0]},${location.boundingbox[3]}|${location.boundingbox[0]},${location.boundingbox[2]}`
-    : '';
-  const MAP_API = `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${location.lat},${location.lon}&zoom=${ZOOM}&size=450x450&format=png&maptype=streets&markers=icon:${location.icon}|${location.lat},${location.lon}&${boundingBoxPath}`;
 
-  // Functions
+  const getBoundingBoxPath = (boundingbox) => {
+    return boundingbox
+      ? `path=fill:transparent|weight:2|color:red|${boundingbox[0]},${boundingbox[2]}|${boundingbox[1]},${boundingbox[2]}|${boundingbox[1]},${boundingbox[3]}|${boundingbox[0]},${boundingbox[3]}|${boundingbox[0]},${boundingbox[2]}`
+      : '';
+  };
+
+  const getMapApiUrl = (location) => {
+    const boundingBoxPath = getBoundingBoxPath(location.boundingbox);
+    return `https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${location.lat},${location.lon}&zoom=${ZOOM}&size=450x450&format=png&maptype=streets&markers=icon:${location.icon}|${location.lat},${location.lon}&${boundingBoxPath}`;
+  };
+
+  const handleError = (error, message) => {
+    console.error('API Error: ', error);
+    setErrorMessage(message);
+    setHasSearched(false);
+  };
+
   async function getLocation(event) {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
     try {
       const API = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${searchQuery}&format=json`;
       const response = await axios.get(API);
-      setLocation(response.data[0]);
-      // console.log(location);
-      // console.log(location.license);
-      setErrorMessage(''); // Need to do this to make sure any previous error message is cleared.
+      const locationData = response.data[0];
+      setLocation(locationData);
+      setErrorMessage('');
+      setHasSearched(true);
+      getWeather(locationData);
     } catch (error) {
-      console.error('API Error: ', error);
-      setErrorMessage('Check your form submission and try again. ' + error);
+      handleError(error, 'Check your form submission and try again.');
     }
+  }
+
+  function getWeather(location) {
+    const API = `http://localhost:4040/weather?searchQuery=${prettyCityName(location.display_name)}&lat=${location.lat}&lon=${location.lon}`;
+    axios.get(API)
+      .then((response) => {
+        setWeather(response.data);
+      })
+      .catch((error) => {
+        handleError(error, 'Check your form submission and try again.');
+      });
   }
 
   function updateQuery(event) {
     setSearchQuery(event.target.value);
-  }
-
-  function prettyCityName(city) {
-    return city.split(',')[0];
   }
 
   return (
@@ -69,20 +83,32 @@ function App() {
           </Col>
         </Row>
       </Form>
-      <Row id="map-and-details">
-        <Col id="cityDetails" md={4}>
-          <h2>City: {prettyCityName(location.display_name)}</h2>
-          <p>Latitude: {location.lat}</p>
-          <p>Longitude: {location.lon}</p>
-        </Col>
-        <Col id="map" md={8}>
-          <Image src={MAP_API} alt="Map" fluid />
-          {/* Ask Cameron why location.license is not updating when location is updated. */}
-          <p id='map-license'>Map of {location.display_name} by <a href={location.license || 'https://locationiq.com/attribution'} target="_blank">LocationIQ</a>.</p>
-        </Col>
-      </Row>
+      {hasSearched && (
+        <>
+          <Row id="map-and-details">
+            <Col id="cityDetails" md={4}>
+              <h2>City: {prettyCityName(location.display_name)}</h2>
+              <p>Latitude: {location.lat}</p>
+              <p>Longitude: {location.lon}</p>
+            </Col>
+            <Col id="map" md={8}>
+              <Image src={getMapApiUrl(location)} alt="Map" fluid />
+              <p id='map-license'>Map of {location.display_name} by <a href={location.license || 'https://locationiq.com/attribution'} target="_blank">LocationIQ</a>.</p>
+            </Col>
+          </Row>
+          <Row id="weather">
+            <Col>
+              <Weather location={location} weather={weather} />
+            </Col>
+          </Row>
+        </>
+      )}
     </Container>
   );
 }
 
-export default App;
+function prettyCityName(city) {
+  return city ? city.split(',')[0] : '';
+}
+
+export { App as default, prettyCityName };
