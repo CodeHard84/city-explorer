@@ -30,6 +30,18 @@ Axios
 
 ## Credit and Collaborations
 
+## Features
+
+Feature Story: As a user of City Explorer, I want to enter the name of a location so that I can see the exact latitude and longitude of that location.
+
+Estimate of time needed to complete: 30 Minutes
+
+Start time: _____
+
+Finish time: _____
+
+Actual time needed to complete: _____
+
 ## Time Template
 
 Name of feature: ________________________________
