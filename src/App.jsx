@@ -4,14 +4,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Form, Button, Image, Alert } from 'react-bootstrap';
 import './App.css';
 import Weather from './Weather';
+import Movies from './Movies';
+
 
 function App() {
   const [location, setLocation] = useState('');
   const [weather, setWeather] = useState();
+  const [movies, setMovies] = useState();
   const [searchQuery, setSearchQuery] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
   const API_KEY = import.meta.env.VITE_API_KEY;
+  const USED_URL = import.meta.env.VITE_USED_URL;
   const ZOOM = 10;
 
   const getBoundingBoxPath = (boundingbox) => {
@@ -41,15 +45,17 @@ function App() {
       setErrorMessage('');
       setHasSearched(true);
       getWeather(locationData);
+      getMovies(locationData);
     } catch (error) {
       handleError(error, 'Check your form submission and try again.');
     }
   }
 
   function getWeather(location) {
-    const API = `https://city-explorer-api-pr-2-g3p9.onrender.com/weather?searchQuery=${prettyCityName(location.display_name)}&lat=${location.lat}&lon=${location.lon}`;
+    const API = `${USED_URL}/weather?searchQuery=${prettyCityName(location.display_name)}&lat=${location.lat}&lon=${location.lon}`;
     axios.get(API)
       .then((response) => {
+        alert('Weather data: ' + JSON.stringify(response.data));
         setWeather(response.data);
       })
       .catch((error) => {
@@ -59,6 +65,18 @@ function App() {
 
   function updateQuery(event) {
     setSearchQuery(event.target.value);
+  }
+
+  function getMovies(location) {
+    const API = `${USED_URL}/movies?searchQuery=${prettyCityName(location.display_name)}`;
+    axios.get(API)
+      .then((response) => {
+        alert('Movies data: ' + JSON.stringify(response.data));
+        setMovies(response.data);
+      })
+      .catch((error) => {
+        handleError(error, 'Check your form submission and try again.');
+      });
   }
 
   return (
@@ -99,6 +117,7 @@ function App() {
           <Row id="weather">
             <Col>
               <Weather location={location} weather={weather} />
+              <Movies name={prettyCityName(location.display_name)} movies={movies} />
             </Col>
           </Row>
         </>
