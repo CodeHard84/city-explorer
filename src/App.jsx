@@ -47,7 +47,7 @@ function App() {
   }
 
   function getWeather(location) {
-    const API = `http://localhost:4040/weather?searchQuery=${prettyCityName(location.display_name)}&lat=${location.lat}&lon=${location.lon}`;
+    const API = `https://city-explorer-api-pr-2-g3p9.onrender.com/weather?searchQuery=${prettyCityName(location.display_name)}&lat=${location.lat}&lon=${location.lon}`;
     axios.get(API)
       .then((response) => {
         setWeather(response.data);
