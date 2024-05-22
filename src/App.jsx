@@ -55,7 +55,6 @@ function App() {
     const API = `${USED_URL}/weather?searchQuery=${prettyCityName(location.display_name)}&lat=${location.lat}&lon=${location.lon}`;
     axios.get(API)
       .then((response) => {
-        alert('Weather data: ' + JSON.stringify(response.data));
         setWeather(response.data);
       })
       .catch((error) => {
@@ -71,7 +70,6 @@ function App() {
     const API = `${USED_URL}/movies?searchQuery=${prettyCityName(location.display_name)}`;
     axios.get(API)
       .then((response) => {
-        alert('Movies data: ' + JSON.stringify(response.data));
         setMovies(response.data);
       })
       .catch((error) => {
