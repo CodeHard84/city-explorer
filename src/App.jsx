@@ -14,8 +14,10 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
-  const API_KEY = import.meta.env.VITE_API_KEY;
-  const USED_URL = import.meta.env.VITE_USED_URL;
+  // const API_KEY = import.meta.env.VITE_API_KEY;
+  // const USED_URL = import.meta.env.VITE_USED_URL;
+  const API_KEY = {{environment.VITE_API_KEY}};
+  const USED_URL = {{environment.VITE_USED_URL}};
   const ZOOM = 10;
 
   const getBoundingBoxPath = (boundingbox) => {
