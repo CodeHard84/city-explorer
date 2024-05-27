@@ -56,6 +56,10 @@ Finish time: 5:53AM
 
 Actual time needed to complete: 23M
 
+## WRRC
+
+![WRRC-8](WRRC-8.png)
+
 ## Time Template
 
 Name of feature: ________________________________
