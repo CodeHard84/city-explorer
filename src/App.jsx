@@ -6,7 +6,6 @@ import './App.css';
 import Weather from './Weather';
 import Movies from './Movies';
 
-
 function App() {
   const [location, setLocation] = useState('');
   const [weather, setWeather] = useState();
