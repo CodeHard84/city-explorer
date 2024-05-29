@@ -10,15 +10,21 @@ export default function Weather(props) {
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Weather for {prettyCityName(props.location.display_name)}</Card.Title>
+        <Card.Title>Weather for {prettyCityName(location.display_name)}</Card.Title>
         <ListGroup variant="flush">
           {props.weather.map((day, index) => (
-            <ListGroup.Item key={index}>
-              {day.date} {day.description}
-            </ListGroup.Item>
+            <WeatherDay key={index} date={day.date} description={day.description} />
           ))}
         </ListGroup>
       </Card.Body>
     </Card>
+  );
+}
+
+function WeatherDay({ date, description }) {
+  return (
+    <ListGroup.Item>
+      {date}: {description}
+    </ListGroup.Item>
   );
 }
