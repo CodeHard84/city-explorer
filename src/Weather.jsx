@@ -7,7 +7,7 @@ export default function Weather(props) {
     return null;
   }
 
-  function WeatherDay({ date, description }) {
+  const WeatherDay = ({ date, description }) => {
     return (
       <ListGroup.Item>
         {date}: {description}
