@@ -7,6 +7,14 @@ export default function Weather(props) {
     return null;
   }
 
+  function WeatherDay({ date, description }) {
+    return (
+      <ListGroup.Item>
+        {date}: {description}
+      </ListGroup.Item>
+    );
+  }
+
   return (
     <Card>
       <Card.Body>
@@ -18,13 +26,5 @@ export default function Weather(props) {
         </ListGroup>
       </Card.Body>
     </Card>
-  );
-}
-
-function WeatherDay({ date, description }) {
-  return (
-    <ListGroup.Item>
-      {date}: {description}
-    </ListGroup.Item>
   );
 }
