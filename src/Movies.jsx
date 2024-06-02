@@ -1,17 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, ListGroup } from 'react-bootstrap';
+import Movie from './Movie';
 
 export default function Movies({ movies, name }) {
   if (!movies || !Array.isArray(movies)) {
     return null;
   }
-
-  const Movie = ({ title, overview }) => (
-    <ListGroup.Item>
-      <strong>{title}</strong>: {overview}
-    </ListGroup.Item>
-  );
 
   return (
     <Card>
@@ -26,3 +21,13 @@ export default function Movies({ movies, name }) {
     </Card>
   );
 }
+
+Movies.propTypes = {
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      overview: PropTypes.string.isRequired
+    })
+  ).isRequired,
+  name: PropTypes.string.isRequired
+};

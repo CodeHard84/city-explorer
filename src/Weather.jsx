@@ -1,18 +1,11 @@
 import React from 'react';
 import { Card, ListGroup } from 'react-bootstrap';
 import { prettyCityName } from './App';
+import WeatherDay from './WeatherDay';
 
-export default function Weather(props) {
-  if (!props.weather || !Array.isArray(props.weather)) {
+export default function Weather({ weather, location }) {
+  if (!weather || !Array.isArray(weather)) {
     return null;
-  }
-
-  const WeatherDay = ({ date, description }) => {
-    return (
-      <ListGroup.Item>
-        {date}: {description}
-      </ListGroup.Item>
-    );
   }
 
   return (
@@ -20,7 +13,7 @@ export default function Weather(props) {
       <Card.Body>
         <Card.Title>Weather for {prettyCityName(location.display_name)}</Card.Title>
         <ListGroup variant="flush">
-          {props.weather.map((day, index) => (
+          {weather.map((day, index) => (
             <WeatherDay key={index} date={day.date} description={day.description} />
           ))}
         </ListGroup>
