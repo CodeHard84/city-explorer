@@ -21,13 +21,3 @@ export default function Movies({ movies, name }) {
     </Card>
   );
 }
-
-Movies.propTypes = {
-  movies: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      overview: PropTypes.string.isRequired
-    })
-  ).isRequired,
-  name: PropTypes.string.isRequired
-};
